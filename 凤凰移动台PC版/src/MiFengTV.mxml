@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark" applicationComplete="windowedapplication1_applicationCompleteHandler(event)" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"  showStatusBar="false"
+					   width="900" height="640" xmlns:local="*" fontFamily="微软雅黑">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import air.update.ApplicationUpdaterUI;
+			import air.update.events.UpdateEvent;
+			
+			import mx.events.FlexEvent;
+			import mx.logging.ILogger;
+			import mx.logging.Log;
+			import mx.logging.LogEventLevel;
+			import mx.logging.targets.LineFormattedTarget;
+			import mx.logging.targets.TraceTarget;
+			import mx.rpc.events.ResultEvent;
+			private static var log:ILogger= Log.getLogger("Main");
+			
+			protected var appUpdater:ApplicationUpdaterUI=new ApplicationUpdaterUI(); // Used for auto-update
+			protected function windowedapplication1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				initLogging();
+				this.checkUpdate();
+				
+			}
+			
+			private function initLogging():void
+			{
+				
+				/* Create a target. */
+				var logTarget:TraceTarget=new TraceTarget();
+				logTarget.level=LogEventLevel.ALL;
+				logTarget.includeDate=false;
+				logTarget.includeTime=true;
+				logTarget.includeCategory=true;
+				logTarget.includeLevel=true;
+				
+				/* Begin logging. */
+				Log.addTarget(logTarget);
+			}
+			
+			// Initialize appUpdater and set some properties
+			protected function checkUpdate():void
+			{
+				// set the URL for the update.xml file
+				appUpdater.updateURL='http://www.raisedtech.com/ifengpc/ifengpc.update.xml';
+				appUpdater.addEventListener(UpdateEvent.INITIALIZED, onUpdate);
+				appUpdater.addEventListener(ErrorEvent.ERROR, onUpdaterError);
+				appUpdater.isCheckForUpdateVisible=false;
+				appUpdater.isFileUpdateVisible=false;
+				appUpdater.isInstallUpdateVisible=false;
+				appUpdater.initialize();
+				log.info("checkUpdate");
+			}
+			
+			// Handler function triggered by the ApplicationUpdater.initialize.
+			// The updater was initialized and it is ready to take commands.
+			protected function onUpdate(event:UpdateEvent):void
+			{
+				// start the process of checking for a new update and to install
+				
+				log.info("onUpdate"+event);
+				appUpdater.checkNow();
+			}
+			
+			// Handler function for error events triggered by the ApplicationUpdater.initialize
+			protected function onUpdaterError(event:ErrorEvent):void
+			{
+				log.info("onUpdaterError"+event);
+				trace(event);
+			}
+		]]>
+	</fx:Script>
+	<local:MainView width="100%" height="100%"/>
+</s:WindowedApplication>

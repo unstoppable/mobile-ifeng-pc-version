@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			protected var template:String = 'http://ct1.ifeng.com/fhzk/v3/get_column_video?mos=ipad_5.1.1&softid=ifengvideo3&softver=3.0.0&publishid=appstore&userkey=ca51cb1f8c158a166e8662b6d7f37c27&ua=iPad&screen=1024x768&touch=yes&net=wifi&opr=cm&imei=7f9285c9e47f4fd245c3d5917b38e8ecb50d752f&catid={CATID}&limit=60';
+			protected var url:String='';
+			private var _catid:String='';
+			[Bindable]
+			public var catname:String='';
+			
+			public function get catid():String
+			{
+				return _catid;
+			}
+
+			public function set catid(value:String):void
+			{
+				_catid = value;
+				url=service.url = template.replace('{CATID}',value);
+				trace('request', url);
+				service.send();
+			}
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			
+			protected function service_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function service_faultHandler(event:FaultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function close(event:MouseEvent):void
+			{
+				this.dispatchEvent(new Event(Event.CLOSE));				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:HTTPService showBusyCursor="true"
+					   id="service" result="service_resultHandler(event)" fault="service_faultHandler(event)" resultFormat="e4x" />
+	</fx:Declarations>
+	<fx:Metadata>
+		[Event(name="close", type="flash.events.Event")]
+	</fx:Metadata>
+	
+	<s:layout >
+		<s:VerticalLayout  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+	</s:layout>
+	
+	<s:HGroup width="100%" verticalAlign="bottom">
+		<s:Label fontSize="24"  text="{catname}"/>
+		<s:Spacer width="100%" />
+		<s:Button label="Back" click="close(event)" />
+	</s:HGroup>
+	
+	<s:Rect width="100%" height="1">
+		<s:fill>
+			<s:SolidColor color="0xdddddd"/>
+		</s:fill>
+	</s:Rect>
+	
+	
+	<s:List width="100%" height="100%" dataProvider="{new XMLListCollection(service.lastResult.media)}" 
+			 itemRenderer="fox.mifeng.view.MediaItemRenderer">
+		<s:layout>
+			<s:TileLayout />
+		</s:layout>
+	</s:List>
+</s:Group>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<fx:Script>
+		<![CDATA[
+			
+			
+			
+			private var _media:XML;
+			[Bindable]
+			private var mediaSource:String
+			[Bindable]
+			public function get media():XML
+			{
+				return _media;
+			}
+
+			public function set media(value:XML):void
+			{
+				_media = value;
+				mediaSource = value.@url;
+			}
+			
+			/*
+			 * 
+			<media id="35790390" 
+			type="video" 
+			title="20120506-内地经济通胀下行 货币有放松空间" 
+			image="http://img.ifeng.com/itvimg//2012/05/07/39da676a-e7a1-401c-b1b5-e88d400cb001150.jpg" 
+			date="2012-05-07 02:52:12" 
+			url="http://3gs2.ifeng.com/userfiles/video/2012/05/07/98794798-9046-47ad-a5b8-5c6487ef7d07280.mp4" 
+			duration="2254" 
+			docurl="http://wap.ifeng.com/news.jsp?aid=35790390" 
+			audiourl="http://3gs2.ifeng.com/userfiles/audio/2012/05/07/98794798-9046-47ad-a5b8-5c6487ef7d07274.mp3"/>
+			*/
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.dispatchEvent(new Event(Event.CLOSE));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	
+	<fx:Metadata>
+		[Event(name="close", type="flash.events.Event")]
+	</fx:Metadata>
+	
+	<s:VideoPlayer id="player" width="100%" height="100%" source="{mediaSource}"  autoPlay="true"/>
+	
+	<s:Button label="CLOSE" right="5" top="5" alpha="0.75" click="button1_clickHandler(event)" />
+	
+</s:Group>

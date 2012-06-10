@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="1024" height="768" 
+		  creationComplete="group1_creationCompleteHandler(event)"
+		 xmlns:local="*" xmlns:view="fox.mifeng.view.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			protected var selectedCate:XML;
+			[Bindable]
+			protected var selectedMedia:XML;
+			[Bindable]
+			protected var viewIndex:int=0;
+			[Bindable]
+			protected var catname:String='';
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				list.addEventListener(Event.SELECT, onTVSelected);
+				mediaList.addEventListener(Event.SELECT, onMediaSelected);
+			}
+			
+			protected function onTVSelected(event:Event):void
+			{
+				// TODO Auto-generated method stub
+				event.stopPropagation();
+				event.preventDefault();
+				selectedCate = event.target.data;
+				trace('selectedCate',selectedCate.toXMLString());
+				viewIndex=1;
+			}
+			
+			protected function onMediaSelected(event:Event):void
+			{
+				selectedMedia = event.target.data;
+				trace('selectedMedia',selectedMedia.toXMLString());
+				viewIndex=2;
+			}
+			
+			protected function mediaList_closeHandler(event:Event):void
+			{
+				viewIndex=0;
+			}
+			
+			protected function playerCloseHandler(event:Event):void
+			{
+				viewIndex=1;				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+	</fx:Declarations>
+	
+	
+	<view:TVShowList id="list" width="100%" height="100%" visible="{viewIndex==0}"/>
+	
+	<view:MediaListView catname="{selectedCate.@name}" catid="{selectedCate.@id}" id="mediaList" visible="{viewIndex==1}" 
+						width="100%" height="100%" close="mediaList_closeHandler(event)" />
+	
+	<view:PlayerView id="player" media="{selectedMedia}"  visible="{viewIndex==2}" 
+					 width="100%" height="100%" close="playerCloseHandler(event)" />
+</s:Group>

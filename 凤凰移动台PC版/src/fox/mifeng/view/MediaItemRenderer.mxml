@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				width="210" height="200"
+				mouseChildren="false" useHandCursor="true" buttonMode="true"
+				autoDrawBackground="true" click="itemrenderer1_clickHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			/*	<media id="35764715" type="video" title="20120505-中国或改在南海不开“第一枪”底线" 
+			image="http://img.ifeng.com/itvimg//2012/05/05/adeb139c-3fab-4e3b-92b3-6276ff46d4eb150.jpg" 
+			date="2012-05-05 23:46:26" 
+			url="http://3gs2.ifeng.com/userfiles/video/2012/05/05/30fea086-37da-44dc-99ee-6f1c6000df02280.mp4" 
+			duration="2912" 
+			docurl="http://wap.ifeng.com/news.jsp?aid=35764715" 
+			audiourl="http://3gs2.ifeng.com/userfiles/audio/2012/05/05/30fea086-37da-44dc-99ee-6f1c6000df02274.mp3"/>
+			
+			
+			
+			*/
+			
+			[Bindable]
+			protected var title:String='';
+			[Bindable]
+			protected var image:String='';
+			[Bindable]
+			protected var date:String='';
+			
+			protected function itemrenderer1_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent(new Event(Event.SELECT,true,true));			
+			}
+			
+			override public function set data(value:Object):void
+			{
+				// TODO Auto Generated method stub
+				super.data = value;
+				trace('value:',value.toXMLString());
+				title = value.@title;
+				title = title.substr(9);
+				image = value.@image;
+				date = value.@date;
+				trace('image:',image);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:VerticalLayout gap="5"  paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" />
+	</s:layout>
+	
+	<s:Image width="200" height="150" source="{image}" />
+	
+	<s:Label width="200" text="{title}" lineBreak="toFit"/>
+	
+	<s:Label width="200" color="#717171" text="{date}"/>
+	
+</s:ItemRenderer>

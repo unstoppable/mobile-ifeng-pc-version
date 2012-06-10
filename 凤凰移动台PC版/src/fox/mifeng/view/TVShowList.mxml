@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="960" height="640" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			protected var url:String = 'http://ct1.ifeng.com/fhzk/v3/video_column_category?mos=ipad_5.1.1&softid=ifengvideo3&softver=3.0.0&publishid=appstore&userkey=ca51cb1f8c158a166e8662b6d7f37c27&ua=iPad&screen=1024x768&touch=yes&net=wifi&opr=cm&imei=7f9285c9e47f4fd245c3d5917b38e8ecb50d752f';
+			
+			protected function service_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function service_faultHandler(event:FaultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				service.send();
+				
+			}
+			
+			/*
+			<category name="独家评论" id="2">
+			<sub name="时事开讲" id="18" image="/imgSrv/images/fhzk/column/2/18.jpg"></sub>
+			<sub name="总编辑时间" id="19" image="/imgSrv/images/fhzk/column/2/19.jpg"></sub>
+			<sub name="震海听风录" id="20" image="/imgSrv/images/fhzk/column/2/20.jpg"></sub>
+			<sub name="一虎一席谈" id="22" image="/imgSrv/images/fhzk/column/2/22.jpg"></sub>
+			<sub name="解码陈文茜" id="23" image="/imgSrv/images/fhzk/column/2/23.jpg"></sub>
+			<sub name="文涛拍案" id="31" image="/imgSrv/images/fhzk/column/4/31.jpg"></sub>
+			<sub name="今日看世界" id="35" image="/imgSrv/images/fhzk/column/4/35.jpg"></sub>
+			<sub name="军情观察室" id="57" image="/imgSrv/images/fhzk/column/8/jqgcs.jpg"></sub>
+			<sub name="新闻今日谈" id="59" image="/imgSrv/images/fhzk/column/8/xwjrt.jpg"></sub>
+			</category> 
+			*/
+			
+			protected function refresh(event:MouseEvent):void
+			{
+				service.send();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		
+		<s:HTTPService url="{url}" showBusyCursor="true"
+					   id="service" result="service_resultHandler(event)" fault="service_faultHandler(event)" resultFormat="e4x" />
+		
+	</fx:Declarations>
+	<s:layout>
+		<s:VerticalLayout  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+	</s:layout>
+	
+	<s:HGroup width="100%" verticalAlign="bottom">
+		<s:Label fontSize="24" fontWeight="bold" text="移动台PC版" />
+		<s:Spacer width="100%" />
+		<s:Button label="Refresh" click="refresh(event)" />
+	</s:HGroup>
+	
+	<s:Rect width="100%" height="1">
+		<s:fill>
+			<s:SolidColor color="0xdddddd"/>
+		</s:fill>
+	</s:Rect>
+	
+	<s:List width="100%" height="100%"   borderAlpha="0"
+			dataProvider="{new XMLListCollection(service.lastResult.category)}" 
+			itemRenderer="fox.mifeng.view.TVCategoryItemRenderer" >
+	</s:List>
+	
+	
+</s:Group>
